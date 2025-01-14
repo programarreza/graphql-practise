@@ -16,18 +16,18 @@ export const resolvers = {
 
 	// query-2 => relation product to category => one-to-one
 	Product: {
-		category: (parent: any, args: any, context: any) => {
-			const result = db.categories.find(category => category.id === parent.categoryId)
-
-			return result
+		category: ({ categoryId }, args: any, context: any) => {
+			return db.categories.find(category => category.id === categoryId)
+		},
+		reviews: ({ id }, args: any, context: any) => {
+			return db.reviews.filter(review => review.productId === id)
 		}
 	},
 
 	// query-3  => relation category to products => one-to-many
 	Category: {
-		products: (parent: any, args: any, context: any) => {
-			const result = db.products.filter(product => product.categoryId === parent.id)
-			return result
+		products: ({ id }, args: any, context: any) => {
+			return db.products.filter(product => product.categoryId === id)
 		}
 	}
 };
